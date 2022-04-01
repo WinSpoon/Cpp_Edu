@@ -1,6 +1,5 @@
 #include <stdio.h>
 
-
 int main(void)
 {
 	/*
@@ -117,6 +116,9 @@ int main(void)
 	printf_s("ют╥б : ");
 	scanf_s("%d", &i); // O
 	*/
+
+
+	// ** printf_s("%d\n", (10 != 10));
 
 
 
