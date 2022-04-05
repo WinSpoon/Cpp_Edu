@@ -20,6 +20,14 @@ float GetAngle(float _deg)
 	return _deg + 10;
 }
 
+
+// ** return & returning type
+float Sum(float _i, float _j)
+{
+	return _i + _j;
+}
+
+
 int main(void)
 {
 	// ** 변수의 이름이 같다면 해당 영역에 있는 변수가 우선순위가 됨.
@@ -48,6 +56,10 @@ int main(void)
 
 	// ** 전역변수 출력
 	printf_s("Count : %d\n", Count);
+
+	//int Result = Sum(10, 20);
+	
+	printf_s("Result : %f\n", Sum(3.1415f, 3.1415f));
 
 
 	return 0;
