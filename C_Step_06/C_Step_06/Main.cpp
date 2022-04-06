@@ -82,5 +82,45 @@ int main(void)
 	*/
 
 
+	/*
+	for (int i = 0; i < 10; i++)
+	{
+		printf_s("Loop Count!: %d\n", i);
+	}
+	*/
+
+
+
+
+	/*
+	// ** ±¸±¸´Ü
+	for (int i = 2; i < 10; i++)
+	{
+		for (int j = 1; j < 10; j++)
+		{
+			printf_s("%d x %d = %d \n", i, j, i * j);
+		}
+		printf_s("\n");
+	}
+	printf_s("\n");
+	*/
+
+
+
+	/*
+	double fPrice1 = 24.0f;
+	int iYear;
+
+	for (iYear = 1627; iYear < 2017; iYear++)
+	{
+		fPrice1 *= 1.08f;
+		fPrice2 *= 1.08f;
+	}
+
+	printf_s("1627 : $ 24 -> 2016 : $ %0.2f\n", fPrice1);
+	*/
+
+
+
 	return 0;
 }
