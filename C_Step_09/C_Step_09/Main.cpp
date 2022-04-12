@@ -25,7 +25,6 @@ int main(void)
 	int iKor[10] = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
 	int iEnd[10] = { 70, 50, 100, 25, 30, 40, 60, 80, 20, 90};
 	int iMath[10] = { 100, 200, 300, 400, 500, 600, 700, 800, 900, 1000 };
-
 	for (int i = 0; i < 10; ++i)
 	{
 		printf_s("%d %d %d\n", iKor[i], iEnd[i], iMath[i]);
@@ -38,14 +37,11 @@ int main(void)
 	/*
 	// ** 선언
 	INFO Info;
-
 	// ** 문자열 복사
 	strcpy(Info.Name, "홍길동");
-
 	Info.iKor = 10;
 	Info.iEng = 20;
 	Info.iMath = 30;
-
 	printf_s("%s\n", Info.Name);
 	printf_s("%d\n", Info.iKor);
 	printf_s("%d\n", Info.iEng);
@@ -57,9 +53,7 @@ int main(void)
 
 	/*
 	INFO info;
-
 	int iIndex = 0;
-
 	printf_s("당신의 직업은 무엇 입니까??\n");
 	printf_s("***************************\n");
 	printf_s("*    1. 도          적    *\n");
@@ -67,22 +61,18 @@ int main(void)
 	printf_s("*    3. 전          사    *\n");
 	printf_s("***************************\n");
 	scanf_s("%d", &iIndex);
-
 	switch (iIndex)
 	{
 	case 1:
 		strcpy(info.Name, "도적");
 		break;
-
 	case 2:
 		strcpy(info.Name, "마법사");
 		break;
-
 	case 3:
 		strcpy(info.Name, "전사");
 		break;
 	}
-
 	printf_s("%s\n", info.Name);
 	*/
 
