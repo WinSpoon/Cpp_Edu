@@ -23,11 +23,7 @@ int main(void)
 	*/
 
 
-
-
-
-
-
+	/*
 	char* cpArray = (char*)"Character Pointer Array";
 
 	printf_s("&cpArray    : %d\n", &cpArray);
@@ -49,10 +45,25 @@ int main(void)
 	cpArray++;
 	printf_s("cpArray     : %d\n", cpArray);
 	printf_s("cpArray[0]  : %c\n\n", cpArray[0]);
+	*/
 
 
 
 
+
+
+	int i = 10;
+	int j = 20;
+
+	int Temp = i;
+	i = j;
+	j = Temp;
+
+	printf_s("%d\n", i);
+	printf_s("%d\n", j);
+
+
+	scanf_s("%d", &i);
 
 
 
