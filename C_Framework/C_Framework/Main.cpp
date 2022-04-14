@@ -5,10 +5,9 @@
 #include <time.h>
 
 
-const int TYPE_PLAYER	= 1;
-const int TYPE_ENEMY	= 2;
-
-
+const int PLAYER	= 0;
+const int ENEMY		= 1;
+const int MAX		= 2;
 
 
 typedef struct tagInfo
@@ -36,56 +35,63 @@ typedef struct tagObject
 
 
 
-
-
-
 void InitializeObject(OBJECT* _Obj, int ObjectType);
 char* SetName();
 
 
 int main(void)
 {
+	/*
 	OBJECT* Player = (OBJECT*)malloc(sizeof(OBJECT));
 	InitializeObject(Player, TYPE_PLAYER);
 
 	OBJECT* Enemy = (OBJECT*)malloc(sizeof(OBJECT));;
 	InitializeObject(Enemy, TYPE_ENEMY);
+	*/
+
+	OBJECT* Objects[MAX];
+
+	Objects[PLAYER] = (OBJECT*)malloc(sizeof(OBJECT));
+	InitializeObject(Objects[PLAYER], PLAYER);
+
+	Objects[ENEMY] = (OBJECT*)malloc(sizeof(OBJECT));
+	InitializeObject(Objects[ENEMY], ENEMY);
+
 
 	while (true)
 	{
 		// ** 콘솔창을 모두 지움.
 		system("cls");
 
-		printf_s("\n[%s]\n", Player->Info.Name);
-		printf_s("HP : %d\n", Player->Info.HP);
-		printf_s("MP : %d\n", Player->Info.MP);
-		printf_s("공격력 : %.2f\n", Player->Info.Att);
-		printf_s("방어력 : %.2f\n", Player->Info.Def);
-		printf_s("EXP : %d\n", Player->Info.EXP);
-		printf_s("Level : %d\n\n", Player->Info.Level);
+		printf_s("\n[%s]\n", Objects[PLAYER]->Info.Name);
+		printf_s("HP : %d\n", Objects[PLAYER]->Info.HP);
+		printf_s("MP : %d\n", Objects[PLAYER]->Info.MP);
+		printf_s("공격력 : %.2f\n", Objects[PLAYER]->Info.Att);
+		printf_s("방어력 : %.2f\n", Objects[PLAYER]->Info.Def);
+		printf_s("EXP : %d\n", Objects[PLAYER]->Info.EXP);
+		printf_s("Level : %d\n\n", Objects[PLAYER]->Info.Level);
 
-		printf_s("[%s]\n", Enemy->Info.Name);
-		printf_s("HP : %d\n", Enemy->Info.HP);
-		printf_s("MP : %d\n", Enemy->Info.MP);
-		printf_s("공격력 : %.2f\n", Enemy->Info.Att);
-		printf_s("방어력 : %.2f\n", Enemy->Info.Def);
-		printf_s("EXP : %d\n", Enemy->Info.EXP);
-		printf_s("Level : %d\n\n", Enemy->Info.Level);
+		printf_s("[%s]\n", Objects[ENEMY]->Info.Name);
+		printf_s("HP : %d\n", Objects[ENEMY]->Info.HP);
+		printf_s("MP : %d\n", Objects[ENEMY]->Info.MP);
+		printf_s("공격력 : %.2f\n", Objects[ENEMY]->Info.Att);
+		printf_s("방어력 : %.2f\n", Objects[ENEMY]->Info.Def);
+		printf_s("EXP : %d\n", Objects[ENEMY]->Info.EXP);
+		printf_s("Level : %d\n\n", Objects[ENEMY]->Info.Level);
 
 		int iChoice = 0;
 		printf_s("몬스터와 만났습니다. 공격하시겠습니까 ?\n1. 공격\n2. 도망\n입력 : ");
 		scanf_s("%d", &iChoice);
 
-
 		switch (iChoice)
 		{
 		case 1:
-			if (Player->Info.Att > Enemy->Info.Def)
+			if (Objects[PLAYER]->Info.Att > Objects[ENEMY]->Info.Def)
 			{
-				Enemy->Info.HP -= Player->Info.Att - Enemy->Info.Def;
+				Objects[ENEMY]->Info.HP -= Objects[PLAYER]->Info.Att - Objects[ENEMY]->Info.Def;
 			}
 			else
-				Enemy->Info.HP -= 1;
+				Objects[ENEMY]->Info.HP -= 1;
 			break;
 		case 2:
 			printf_s("도망치는것에 [성공] 했습니다.\n");
@@ -103,7 +109,7 @@ void InitializeObject(OBJECT* _Obj, int ObjectType)
 {
 	switch (ObjectType)
 	{
-	case TYPE_PLAYER:
+	case PLAYER:
 		_Obj->Info.Name = SetName();
 
 		_Obj->Info.Att = 10;
@@ -113,7 +119,7 @@ void InitializeObject(OBJECT* _Obj, int ObjectType)
 		_Obj->Info.MP = 10;
 		_Obj->Info.Level = 1;
 		break;
-	case TYPE_ENEMY:
+	case ENEMY:
 		_Obj->Info.Name = (char*)"Enemy";
 
 		_Obj->Info.Att = 5;
