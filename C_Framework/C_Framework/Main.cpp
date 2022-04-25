@@ -20,12 +20,9 @@ int SceneState = 0;
 
 
 
-
-
-
+// ** 각종 능력치 
 typedef struct tagInfo
 {
-	char* Name;
 	int HP;
 	int MP;
 
@@ -39,22 +36,18 @@ typedef struct tagInfo
 }INFO;
 
 
+// ** 오브젝트의 단위로 묶기위함.
 typedef struct tagObject
 {
+	char* Name;
 	INFO Info;
 
 }OBJECT;
 
-
 OBJECT* Objects[MAX];
 
 
-
-
-
-
-
-void SceneManager(int _SceneState);
+void SceneManager();
 void InitializeObject(OBJECT* _Obj, int ObjectType);
 char* SetName();
 
@@ -62,39 +55,56 @@ void LogoScene();
 void MenuScene();
 void StageScene();
 
+/*
+void Func1(int _i, int _n)
+{
+	_i = 100;
+	_n = 200;
+
+	printf_s("Func1 _i: %d\n", _i);
+	printf_s("Func1 _n: %d\n", _n);
+}
+
+
+void Func2(int* _i, int* _n)
+{
+	*_i = 100;
+	*_n = 200;
+
+	printf_s("Func2 *_i: %d\n", _i);
+	printf_s("Func2 *_n: %d\n", _n);
+}
+*/
+
 
 
 int main(void)
 {
 	/*
-	OBJECT* Player = (OBJECT*)malloc(sizeof(OBJECT));
-	InitializeObject(Player, TYPE_PLAYER);
+	int iNumber1 = 10;
+	int iNumber2 = 20;
 
-	OBJECT* Enemy = (OBJECT*)malloc(sizeof(OBJECT));;
-	InitializeObject(Enemy, TYPE_ENEMY);
+	printf_s("iNumber1: %d\n", &iNumber1);	// ** iNumber1의 주소값 출력
+	printf_s("iNumber2: %d\n\n", &iNumber2);  // ** iNumber2의 주소값 출력
+
+	// ** 데이터 복사
+	Func1(iNumber1, iNumber2);
+
+	printf_s("Func1 iNumber1: %d\n", iNumber1);  // ** iNumber1의 값 출력
+	printf_s("Func1 iNumber2: %d\n\n", iNumber2);  // ** iNumber2의 값 출력
+
+	// ** 주소 복사
+	Func2(&iNumber1, &iNumber2);
+
+	printf_s("Func2 iNumber1: %d\n", iNumber1);  // ** iNumber1의 값 출력
+	printf_s("Func2 iNumber2: %d\n", iNumber2);  // ** iNumber2의 값 출력
 	*/
-
-	
-	Objects[PLAYER] = (OBJECT*)malloc(sizeof(OBJECT));
-	InitializeObject(Objects[PLAYER], PLAYER);
-
-	Objects[ENEMY] = (OBJECT*)malloc(sizeof(OBJECT));
-	InitializeObject(Objects[ENEMY], ENEMY);
-
-	SceneState = 0;
-
-	while (true)
-	{
-		SceneManager(SceneState);
-	}
-
 	return 0;
 }
 
-
-void SceneManager(int _SceneState)
+void SceneManager()
 {
-	switch (_SceneState)
+	switch (SceneState)
 	{
 	case Scene_Logo:
 		LogoScene();
@@ -106,19 +116,18 @@ void SceneManager(int _SceneState)
 		StageScene();
 		break;
 	case Scene_Exit:
-		
+
 		exit(NULL);// ** 프로그램 종료
 		break;
 	}
 }
 
-
-void InitializeObject(OBJECT* _Obj, int ObjectType)
+void InitializeObject(OBJECT* _Obj, int _Key)
 {
-	switch (ObjectType)
+	switch (_Key)
 	{
 	case PLAYER:
-		_Obj->Info.Name = SetName();
+		_Obj->Name = SetName();
 
 		_Obj->Info.Att = 10;
 		_Obj->Info.Def = 10;
@@ -128,7 +137,7 @@ void InitializeObject(OBJECT* _Obj, int ObjectType)
 		_Obj->Info.Level = 1;
 		break;
 	case ENEMY:
-		_Obj->Info.Name = (char*)"Enemy";
+		_Obj->Name = (char*)"Enemy";
 
 		_Obj->Info.Att = 5;
 		_Obj->Info.Def = 15;
@@ -142,14 +151,22 @@ void InitializeObject(OBJECT* _Obj, int ObjectType)
 
 char* SetName()
 {
+	// ** scanf 함수로 문자열을 입력받기 위해 문자열을 받을수있는 배열을 선언.
 	char Buffer[128] = "";
 
 	printf_s("이름 입력 : ");
+
+	// ** 문자열을 입력 받음.
 	scanf("%s", Buffer);
 
+	// ** 입력 받은값은 배열 이지만, 반환 값은 캐릭터 포인터형이므로 문자열을 복사햐야함.
+	// ** 문자열을 복사 하기위해 포인터가 가르키는 공간에 입력받은 문자열이 들아갈만큼의 크기로 메모리 할당.
 	char* pName = (char*)malloc(strlen(Buffer) + 1);
+
+	// ** Buffer 가 받은 문자열을 pName 으로 복사 
 	strcpy(pName, Buffer);
 
+	// ** 반환.
 	return pName;
 }
 
@@ -178,12 +195,13 @@ void MenuScene()
 void StageScene()
 {
 	int iLoopCheck = 1;
+
 	while (iLoopCheck)
 	{
 		// ** 콘솔창을 모두 지움.
 		//system("cls");
 
-		printf_s("\n[%s]\n", Objects[PLAYER]->Info.Name);
+		printf_s("\n[%s]\n", Objects[PLAYER]->Name);
 		printf_s("HP : %d\n", Objects[PLAYER]->Info.HP);
 		printf_s("MP : %d\n", Objects[PLAYER]->Info.MP);
 		printf_s("공격력 : %.2f\n", Objects[PLAYER]->Info.Att);
@@ -191,7 +209,7 @@ void StageScene()
 		printf_s("EXP : %d\n", Objects[PLAYER]->Info.EXP);
 		printf_s("Level : %d\n\n", Objects[PLAYER]->Info.Level);
 
-		printf_s("[%s]\n", Objects[ENEMY]->Info.Name);
+		printf_s("[%s]\n", Objects[ENEMY]->Name);
 		printf_s("HP : %d\n", Objects[ENEMY]->Info.HP);
 		printf_s("MP : %d\n", Objects[ENEMY]->Info.MP);
 		printf_s("공격력 : %.2f\n", Objects[ENEMY]->Info.Att);
@@ -207,19 +225,21 @@ void StageScene()
 		scanf_s("%d", &iChoice);
 
 
+		int i = int(10.0f - 5.0f);
+
 		switch (iChoice)
 		{
 		case 1:
 			if (Objects[PLAYER]->Info.Att > Objects[ENEMY]->Info.Def)
 			{
-				Objects[ENEMY]->Info.HP -= Objects[PLAYER]->Info.Att - Objects[ENEMY]->Info.Def;
+				Objects[ENEMY]->Info.HP -= int(Objects[PLAYER]->Info.Att - Objects[ENEMY]->Info.Def);
 			}
 			else
 				Objects[ENEMY]->Info.HP -= 1;
 
 			if (Objects[ENEMY]->Info.Att > Objects[PLAYER]->Info.Def)
 			{
-				Objects[PLAYER]->Info.HP -= Objects[ENEMY]->Info.Att - Objects[PLAYER]->Info.Def;
+				Objects[PLAYER]->Info.HP -= int(Objects[ENEMY]->Info.Att - Objects[PLAYER]->Info.Def);
 			}
 			else
 				Objects[PLAYER]->Info.HP -= 1;
