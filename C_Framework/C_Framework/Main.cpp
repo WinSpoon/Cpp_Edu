@@ -6,6 +6,9 @@
 #include <Windows.h>
 
 
+// ** 참고 : https://www.youtube.com/watch?v=_nuS86ITjIM
+
+
 const int PLAYER = 0;
 const int ENEMY = 1;
 const int MAX = 2;
@@ -17,12 +20,7 @@ const int Scene_Exit = 3;
 
 int SceneState = 0;
 
-
-
 int Check = 1;
-
-
-
 
 // ** 각종 능력치 
 typedef struct tagInfo
@@ -49,7 +47,6 @@ typedef struct tagObject
 }OBJECT;
 
 
-
 void SceneManager(OBJECT* _Player, OBJECT* _Enemy);
 char* SetName();
 
@@ -71,7 +68,6 @@ int main(void)
 
 	OBJECT* Monster = (OBJECT*)malloc(sizeof(OBJECT));
 	InitializeEnemy(Monster);
-
 
 	DWORD dwTime = GetTickCount(); // 1/1000 (1000분의 1초)
 	int Delay = 1000;
@@ -177,8 +173,6 @@ void InitializePlayer(OBJECT* _Player)
 	_Player->Info.Level = 1;
 }
 
-
-
 DWORD SetnameTime = 0;
 
 void PlayerScene(OBJECT* _Player)
@@ -194,9 +188,6 @@ void PlayerScene(OBJECT* _Player)
 		Check = 0;
 	}
 }
-
-
-
 
 void InitializeEnemy(OBJECT* _Enemy)
 {
