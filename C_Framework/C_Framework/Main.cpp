@@ -19,6 +19,10 @@ int SceneState = 0;
 
 
 
+int Check = 1;
+
+
+
 
 // ** 각종 능력치 
 typedef struct tagInfo
@@ -44,65 +48,54 @@ typedef struct tagObject
 
 }OBJECT;
 
-OBJECT* Objects[MAX];
 
 
-void SceneManager();
-void InitializeObject(OBJECT* _Obj, int ObjectType);
+void SceneManager(OBJECT* _Player, OBJECT* _Enemy);
 char* SetName();
 
 void LogoScene();
 void MenuScene();
-void StageScene();
+void StageScene(OBJECT* _Player, OBJECT* _Enemy);
 
-/*
-void Func1(int _i, int _n)
-{
-	_i = 100;
-	_n = 200;
+void InitializePlayer(OBJECT* _Player);
+void PlayerScene(OBJECT* _Player);
 
-	printf_s("Func1 _i: %d\n", _i);
-	printf_s("Func1 _n: %d\n", _n);
-}
-
-
-void Func2(int* _i, int* _n)
-{
-	*_i = 100;
-	*_n = 200;
-
-	printf_s("Func2 *_i: %d\n", _i);
-	printf_s("Func2 *_n: %d\n", _n);
-}
-*/
-
+void InitializeEnemy(OBJECT* _Enemy);
+void EnemyScene(OBJECT* _Enemy);
 
 
 int main(void)
 {
-	/*
-	int iNumber1 = 10;
-	int iNumber2 = 20;
+	OBJECT* Player = (OBJECT*)malloc(sizeof(OBJECT));
+	InitializePlayer(Player);
 
-	printf_s("iNumber1: %d\n", &iNumber1);	// ** iNumber1의 주소값 출력
-	printf_s("iNumber2: %d\n\n", &iNumber2);  // ** iNumber2의 주소값 출력
+	OBJECT* Monster = (OBJECT*)malloc(sizeof(OBJECT));
+	InitializeEnemy(Monster);
 
-	// ** 데이터 복사
-	Func1(iNumber1, iNumber2);
 
-	printf_s("Func1 iNumber1: %d\n", iNumber1);  // ** iNumber1의 값 출력
-	printf_s("Func1 iNumber2: %d\n\n", iNumber2);  // ** iNumber2의 값 출력
+	DWORD dwTime = GetTickCount(); // 1/1000 (1000분의 1초)
+	int Delay = 1000;
 
-	// ** 주소 복사
-	Func2(&iNumber1, &iNumber2);
+	int UpCount = 0;
 
-	printf_s("Func2 iNumber1: %d\n", iNumber1);  // ** iNumber1의 값 출력
-	printf_s("Func2 iNumber2: %d\n", iNumber2);  // ** iNumber2의 값 출력
-	*/
+	while (true)
+	{
+		if (dwTime + Delay < GetTickCount()) 
+		{
+			dwTime = GetTickCount();
+			system("cls");
+
+			printf_s("%s\n", Player->Name);
+
+			// ** 게임 루프
+			SceneManager(Player, Monster);
+		}
+	}
+
 	return 0;
 }
 
-void SceneManager()
+void SceneManager(OBJECT* _Player, OBJECT* _Enemy)
 {
 	switch (SceneState)
 	{
@@ -113,38 +106,11 @@ void SceneManager()
 		MenuScene();
 		break;
 	case Scene_Stage:
-		StageScene();
+		StageScene(_Player, _Enemy);
 		break;
 	case Scene_Exit:
 
 		exit(NULL);// ** 프로그램 종료
-		break;
-	}
-}
-
-void InitializeObject(OBJECT* _Obj, int _Key)
-{
-	switch (_Key)
-	{
-	case PLAYER:
-		_Obj->Name = SetName();
-
-		_Obj->Info.Att = 10;
-		_Obj->Info.Def = 10;
-		_Obj->Info.EXP = 0;
-		_Obj->Info.HP = 100;
-		_Obj->Info.MP = 10;
-		_Obj->Info.Level = 1;
-		break;
-	case ENEMY:
-		_Obj->Name = (char*)"Enemy";
-
-		_Obj->Info.Att = 5;
-		_Obj->Info.Def = 15;
-		_Obj->Info.EXP = 0;
-		_Obj->Info.HP = 30;
-		_Obj->Info.MP = 5;
-		_Obj->Info.Level = 1;
 		break;
 	}
 }
@@ -192,78 +158,68 @@ void MenuScene()
 		SceneState = Scene_Exit;
 }
 
-void StageScene()
+void StageScene(OBJECT* _Player, OBJECT* _Enemy)
+{	
+	// ** 전투
+	PlayerScene(_Player);
+	EnemyScene(_Enemy);
+}
+
+void InitializePlayer(OBJECT* _Player)
 {
-	int iLoopCheck = 1;
+	_Player->Name = SetName();
 
-	while (iLoopCheck)
+	_Player->Info.Att = 10;
+	_Player->Info.Def = 10;
+	_Player->Info.EXP = 0;
+	_Player->Info.HP = 100;
+	_Player->Info.MP = 10;
+	_Player->Info.Level = 1;
+}
+
+
+
+DWORD SetnameTime = 0;
+
+void PlayerScene(OBJECT* _Player)
+{
+	if (SetnameTime + 10000 < GetTickCount())
+		Check = 1;
+
+	if (Check)
 	{
-		// ** 콘솔창을 모두 지움.
-		//system("cls");
+		SetnameTime = GetTickCount();
 
-		printf_s("\n[%s]\n", Objects[PLAYER]->Name);
-		printf_s("HP : %d\n", Objects[PLAYER]->Info.HP);
-		printf_s("MP : %d\n", Objects[PLAYER]->Info.MP);
-		printf_s("공격력 : %.2f\n", Objects[PLAYER]->Info.Att);
-		printf_s("방어력 : %.2f\n", Objects[PLAYER]->Info.Def);
-		printf_s("EXP : %d\n", Objects[PLAYER]->Info.EXP);
-		printf_s("Level : %d\n\n", Objects[PLAYER]->Info.Level);
-
-		printf_s("[%s]\n", Objects[ENEMY]->Name);
-		printf_s("HP : %d\n", Objects[ENEMY]->Info.HP);
-		printf_s("MP : %d\n", Objects[ENEMY]->Info.MP);
-		printf_s("공격력 : %.2f\n", Objects[ENEMY]->Info.Att);
-		printf_s("방어력 : %.2f\n", Objects[ENEMY]->Info.Def);
-		printf_s("EXP : %d\n", Objects[ENEMY]->Info.EXP);
-		printf_s("Level : %d\n\n", Objects[ENEMY]->Info.Level);
-
-		// ** 딜레이 함수   1/1000   (1000 = 1초)
-		Sleep(500);
-
-		int iChoice = 0;
-		printf_s("몬스터와 만났습니다. 공격하시겠습니까 ?\n1. 공격\n2. 도망\n입력 : ");
-		scanf_s("%d", &iChoice);
-
-
-		int i = int(10.0f - 5.0f);
-
-		switch (iChoice)
-		{
-		case 1:
-			if (Objects[PLAYER]->Info.Att > Objects[ENEMY]->Info.Def)
-			{
-				Objects[ENEMY]->Info.HP -= int(Objects[PLAYER]->Info.Att - Objects[ENEMY]->Info.Def);
-			}
-			else
-				Objects[ENEMY]->Info.HP -= 1;
-
-			if (Objects[ENEMY]->Info.Att > Objects[PLAYER]->Info.Def)
-			{
-				Objects[PLAYER]->Info.HP -= int(Objects[ENEMY]->Info.Att - Objects[PLAYER]->Info.Def);
-			}
-			else
-				Objects[PLAYER]->Info.HP -= 1;
-
-			iLoopCheck = 0;
-			break;
-		case 2:
-
-			int iRand = rand() % 100;
-
-			if (iRand < 10)
-			{
-				printf_s("도망치는것에 [성공] 했습니다.\n");
-				iLoopCheck = 0;
-			}
-			else
-			{
-				printf_s("도망치는것에 [실패] 했습니다.\n");
-				printf_s("전투가 시작됩니다.\n");
-				iChoice = 1;
-			}
-
-			Sleep(1500);
-			break;
-		}
+		_Player->Name = SetName();
+		Check = 0;
 	}
 }
+
+
+
+
+void InitializeEnemy(OBJECT* _Enemy)
+{
+	_Enemy->Name = (char*)"Enemy";
+
+	_Enemy->Info.Att = 5;
+	_Enemy->Info.Def = 15;
+	_Enemy->Info.EXP = 0;
+	_Enemy->Info.HP = 30;
+	_Enemy->Info.MP = 5;
+	_Enemy->Info.Level = 1;
+}
+
+void EnemyScene(OBJECT* _Enemy)
+{
+
+}
+
+
+
+
+// ** 플레이어
+// ** 몬스터
+
+
+
